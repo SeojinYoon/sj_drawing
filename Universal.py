@@ -12,9 +12,23 @@ class Calculator:
         dx = other_rect_center_x - ref_rect_center_x
         dy = other_rect_center_y - ref_rect_center_y
 
-        slope = dy / dx
+        if dx == 0:
+            slope = np.inf
+        else:
+            slope = dy / dx
 
         ref_rect_slope = ref_rect_height / ref_rect_width
+
+        if slope == np.inf and dy >= 0:
+            xp = ref_rect_center_x + (ref_rect_width / 2)
+            yp = yp = ref_rect_center_y + (ref_rect_height / 2)
+
+            return [xp, yp]
+        elif slope == np.inf and dy < 0:
+            xp = ref_rect_center_x + (ref_rect_width / 2)
+            yp = ref_rect_center_y - (ref_rect_height / 2)
+
+            return [xp, yp]
 
         # Reference Coords -> Descrartes
         if np.abs(slope) < np.abs(ref_rect_slope):

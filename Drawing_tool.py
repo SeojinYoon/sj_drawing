@@ -18,6 +18,7 @@ class Obj:
     height = 0
 
     def __init__(self, master, name):
+        self.master = master
         self.frame = Frame(master)
         self.name = name
 
@@ -71,7 +72,11 @@ class LongitudinalBox(Obj):
         # center anchor
         width = self.frame.winfo_reqwidth()
         height = self.frame.winfo_reqheight()
-        self.frame.place(x = x - width/2, y = y - height/2)
+
+        if isinstance(self.master, tk.Canvas):
+            self.master.create_window(x, y, window=self.frame)
+        else:
+            self.frame.place(x = x - width/2, y = y - height/2)
 
     def box(self):
         width = self.frame.winfo_reqwidth()
@@ -146,13 +151,11 @@ class Inheritance_layout(layout):
 
             for base_theory_name in self.search_base_data(datas, box.name):
                 searched_box = self.search_obj(objs, base_theory_name)
+                if searched_box != None:
+                    r1_proximity_pt = cl.find_proximity_pt_between_rects(box.box(), searched_box.box())
+                    r2_proximity_pt = cl.find_proximity_pt_between_rects(searched_box.box(), box.box())
 
-                r1_proximity_pt = cl.find_proximity_pt_between_rects(box.box(), searched_box.box())
-                r2_proximity_pt = cl.find_proximity_pt_between_rects(searched_box.box(), box.box())
-
-                print(r1_proximity_pt)
-                print(r2_proximity_pt)
-                self.canvas.create_line(r1_proximity_pt[0], r1_proximity_pt[1],
-                                   r2_proximity_pt[0], r2_proximity_pt[1],
-                                   arrow=tk.FIRST)
+                    self.canvas.create_line(r1_proximity_pt[0], r1_proximity_pt[1],
+                                       r2_proximity_pt[0], r2_proximity_pt[1],
+                                       arrow=tk.FIRST)
         self.canvas.update()
