@@ -139,10 +139,11 @@ class CircleLayout(layout):
 class Inheritance_layout(layout):
     def __init__(self, canvas, base_layout, search_base_data, search_obj):
         super(Inheritance_layout, self).__init__(canvas)
+
         self.base_layout = base_layout
         self.search_base_data = search_base_data # It is lambda that finds base data
         self.search_obj = search_obj # It is lambda that finds obj for layouting
-
+        
     def layout(self, objs, datas):
         self.base_layout.layout(objs)
 
